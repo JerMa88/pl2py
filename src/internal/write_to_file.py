@@ -32,4 +32,4 @@ def __main__():
     args = parser.parse_args()
 
     # Write to the file
-    _write_to_file(args.text, args.text, mode=args.mode)
+    write_to_file(args.text, args.text, mode=args.mode)
