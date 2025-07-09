@@ -1,52 +1,34 @@
-import os
-import pytest
-from unittest.mock import patch, mock_open
-from src.internal.write_pydoc import write_pydoc_text, write_pydoc_HTML
+from src.internal.write_pydoc import MDDoc, write_pydoc_text, write_pydoc_HTML
+import os, subprocess
 
-@pytest.fixture
-def cleanup_files():
-    """Fixture to clean up generated files after tests."""
-    yield
-    for ext in ['.md', '.html']:
-        for file in os.listdir():
-            if file.endswith(ext):
-                os.remove(file)
+package_name = "pydoc"
 
-def test_write_pydoc_text_creates_md_file(cleanup_files):
-    """Test that _write_pydoc_text creates a .md file."""
-    package_name = "test_package"
-    with patch("builtins.open", mock_open()) as mocked_file, patch("pydoc.render_doc", return_value="Mocked Documentation"):
-        write_pydoc_text(package_name)
-        mocked_file.assert_called_once_with(f"{package_name}.md", "w")
-        mocked_file().write.assert_called_once_with("Mocked Documentation")
+def test_mddoc_bold():
+    renderer = MDDoc()
+    result = renderer.bold("test")
+    assert result == "**test**"
 
-def test_write_pydoc_HTML_creates_html_file(cleanup_files):
-    """Test that _write_pydoc_HTML creates a .html file."""
-    package_name = "test_package"
-    with patch("pydoc.writedoc") as mocked_writedoc:
-        write_pydoc_HTML(package_name)
-        mocked_writedoc.assert_called_once_with(package_name)
+def test_write_pydoc_text():
+    """Test the write_pydoc_text function."""
+    assert write_pydoc_text(package_name) is None
+    assert os.path.exists(f"{package_name}.md")
 
-def test_main_function_creates_files(cleanup_files):
+def test_write_pydoc_HTML():
+    """Test the write_pydoc_HTML function."""
+    assert write_pydoc_HTML(package_name) is None
+    assert os.path.exists(f"{package_name}.html")
+
+def test_main_function_creates_files():
     """Test the main function generates both .md and .html files."""
-    package_name = "test_package"
-    with patch("sys.argv", ["write_pydoc.py", package_name]), \
-         patch("pydoc.render_doc", return_value="Mocked Documentation"), \
-         patch("pydoc.writedoc") as mocked_writedoc, \
-         patch("builtins.open", mock_open()) as mocked_file:
-        from src.internal.write_pydoc import __main__  # Importing __main__ to simulate script execution
-        mocked_file.assert_called_once_with(f"{package_name}.md", "w")
-        mocked_file().write.assert_called_once_with("Mocked Documentation")
-        mocked_writedoc.assert_called_once_with(package_name)
+    assert subprocess.run(["python3", "src/internal/write_pydoc.py", package_name], check=True).returncode == 0
+    assert os.path.exists(f"{package_name}.md")
+    assert os.path.exists(f"{package_name}.html")
 
-def test_write_pydoc_text_raises_error_on_invalid_package():
-    """Test that _write_pydoc_text raises an error for an invalid package."""
+def test_invalid_package_name():
+    """Test the main function with an invalid package name."""
     invalid_package_name = "non_existent_package"
-    with pytest.raises(ImportError):
-        write_pydoc_text(invalid_package_name)
-
-def test_write_pydoc_HTML_raises_error_on_invalid_package():
-    """Test that _write_pydoc_HTML raises an error for an invalid package."""
-    invalid_package_name = "non_existent_package"
-    with pytest.raises(ImportError):
-        write_pydoc_HTML(invalid_package_name)
+    result = subprocess.run(["python3", "src/internal/write_pydoc.py", invalid_package_name], capture_output=True, text=True)
+    assert result.returncode != 0
+    assert "non_existent_package" in result.stderr
+    assert not os.path.exists(f"{invalid_package_name}.md")
+    assert not os.path.exists(f"{invalid_package_name}.html")
