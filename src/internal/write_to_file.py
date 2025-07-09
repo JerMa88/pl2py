@@ -1,4 +1,4 @@
-def _write_to_file(output_file_dir:str, text:str, mode:str='a'):
+def write_to_file(output_file_dir:str, text:str, mode:str='a'):
     """Writes text to a specified file.
 
     Args:

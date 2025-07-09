@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Python: module write_to_file</title>
+</head><body>
+
+<table class="heading">
+<tr class="heading-text decor">
+<td class="title">&nbsp;<br><strong class="title">write_to_file</strong></td>
+<td class="extra"><a href=".">index</a><br><a href="file:/home/zma/Documents/programs/pl2py/src/internal/write_to_file.py">/home/zma/Documents/programs/pl2py/src/internal/write_to_file.py</a></td></tr></table>
+    <p></p>
+<p>
+<table class="section">
+<tr class="decor functions-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Functions</strong></td></tr>
+    
+<tr><td class="decor functions-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><dl><dt><a name="-__main__"><strong>__main__</strong></a>()</dt><dd><span class="code">Main&nbsp;function&nbsp;to&nbsp;demonstrate&nbsp;writing&nbsp;to&nbsp;a&nbsp;file.<br>
+parses&nbsp;the&nbsp;command&nbsp;line&nbsp;arguments&nbsp;to&nbsp;get&nbsp;the&nbsp;output&nbsp;file&nbsp;name&nbsp;and&nbsp;text&nbsp;to&nbsp;write.</span></dd></dl>
+ <dl><dt><a name="-write_to_file"><strong>write_to_file</strong></a>(output_file_dir: str, text: str, mode: str = 'a')</dt><dd><span class="code">Writes&nbsp;text&nbsp;to&nbsp;a&nbsp;specified&nbsp;file.<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;output_file_dir&nbsp;(str):&nbsp;The&nbsp;path&nbsp;to&nbsp;the&nbsp;output&nbsp;file&nbsp;where&nbsp;the&nbsp;text&nbsp;will&nbsp;be&nbsp;written.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;text&nbsp;(str):&nbsp;The&nbsp;text&nbsp;to&nbsp;write&nbsp;to&nbsp;the&nbsp;file.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;mode&nbsp;(str,&nbsp;optional):&nbsp;The&nbsp;mode&nbsp;in&nbsp;which&nbsp;to&nbsp;open&nbsp;the&nbsp;file.&nbsp;Defaults&nbsp;to&nbsp;'a'.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'a'&nbsp;for&nbsp;append,&nbsp;'w'&nbsp;for&nbsp;write&nbsp;(overwriting&nbsp;existing&nbsp;content),&nbsp;'x'&nbsp;for&nbsp;exclusive&nbsp;creation.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'a'&nbsp;is&nbsp;the&nbsp;default&nbsp;mode,&nbsp;which&nbsp;appends&nbsp;to&nbsp;the&nbsp;file&nbsp;if&nbsp;it&nbsp;exists&nbsp;or&nbsp;creates&nbsp;a&nbsp;new&nbsp;file&nbsp;if&nbsp;it&nbsp;does&nbsp;not&nbsp;exist.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'w'&nbsp;will&nbsp;overwrite&nbsp;the&nbsp;file&nbsp;if&nbsp;it&nbsp;exists,&nbsp;and&nbsp;create&nbsp;a&nbsp;new&nbsp;file&nbsp;if&nbsp;it&nbsp;does&nbsp;not&nbsp;exist.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'x'&nbsp;will&nbsp;raise&nbsp;an&nbsp;error&nbsp;if&nbsp;the&nbsp;file&nbsp;already&nbsp;exists,&nbsp;ensuring&nbsp;that&nbsp;you&nbsp;do&nbsp;not&nbsp;accidentally&nbsp;overwrite&nbsp;an&nbsp;existing&nbsp;file.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'r'&nbsp;is&nbsp;not&nbsp;used&nbsp;here&nbsp;as&nbsp;it&nbsp;is&nbsp;for&nbsp;reading&nbsp;only&nbsp;and&nbsp;does&nbsp;not&nbsp;allow&nbsp;writing.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Raises:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ValueError:&nbsp;If&nbsp;the&nbsp;mode&nbsp;is&nbsp;not&nbsp;one&nbsp;of&nbsp;'a',&nbsp;'w',&nbsp;or&nbsp;'x'.</span></dd></dl>
+</td></tr></table>
+</body></html>
