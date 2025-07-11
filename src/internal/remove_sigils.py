@@ -115,7 +115,7 @@ def __main__():
     args = parser.parse_args()
 
     if args.file:
-        with open(args.file, 'r') as infile, open(args.output, 'w') if args.output else open('./translated.py', 'w') as outfile:
+        with open(args.file, 'r') as infile, open(args.output, 'w') if args.output else open('./removed_sigils.py', 'w') as outfile:
             for line in infile:
                 result = remove_sigils(line)
                 if args.verbose:
