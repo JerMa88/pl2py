@@ -109,14 +109,36 @@ def remove_sigils(line: str) -> str:
 def __main__():
     parser = argparse.ArgumentParser(description="Remove sigils from Perl variable names in a string.")
     parser.add_argument('-l', '--line', type=str, required=False, default="$value = $hash{'key'};", help='Input line containing Perl code')
+    parser.add_argument('-f', '--file', type=str, required=False, help='Input file containing Perl code to process line by line')
+    parser.add_argument('-o', '--output', type=str, required=False, help='Output file to save the processed Python code')
+    parser.add_argument('-v', '--verbose', action='store_true', help='Enable verbose output')
     args = parser.parse_args()
 
-    result = remove_sigils(args.line)
-    print(f"Original Perl: {args.line}")
-    print(f"Converted Python: {result}")
-
-def __main__():
-    return _convert_declarations("sub $func_name {")
+    if args.file:
+        with open(args.file, 'r') as infile, open(args.output, 'w') if args.output else open('./translated.py', 'w') as outfile:
+            for line in infile:
+                result = remove_sigils(line)
+                if args.verbose:
+                    print(f"Original: {line.strip()} -> Converted: {result}")
+                if outfile:
+                    outfile.write(result + '\n')
+                
+    else:
+        # Process a single line input
+        if not args.line:
+            raise ValueError("No input line provided. Use -l or --line to specify a line of Perl code.")
+        if args.verbose:
+            print(f"Processing line: {args.line}")
+        if args.output:
+            with open(args.output, 'w') as outfile:
+                result = remove_sigils(args.line)
+                outfile.write(result + '\n')
+        else:
+            # Print the result to console if no output file is specified
+            if args.verbose:
+                print(f"Converted line: {args.line} -> {remove_sigils(args.line)}")
+            else:
+                print(remove_sigils(args.line)) 
 
 if __name__ == "__main__":
     __main__()
