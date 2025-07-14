@@ -37,7 +37,7 @@ def _convert_declarations(line: str) -> str:
     
     # Handle local variable declaration
     matches = re.findall(r'(\$|\@|\%|\&|\*)(\w+)', line)
-    if not matches: raise SyntaxError(f"Given Perl code does not have sigils upon initilization of variables or subroutine!\nIssue occured at: {line}")
+    if not matches and not "sub " in line: raise SyntaxError(f"Given Perl code does not have sigils upon initilization of variables or subroutine!\nIssue occured at: {line}")
     for sigil, var_name in matches:
         type_hint = _append_typing(sigil)
             
