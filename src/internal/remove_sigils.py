@@ -29,7 +29,13 @@ def _convert_shift(line: str) -> str:
     
 def _convert_declarations(line: str) -> str:
     # Handle declarations (e.g., `my $scalar;`) that weren't matched above
-    if line.find("my ") == -1 and line.find("our ") == -1 and line.find("sub ") == -1 : return line # verbose: the string does not have "my", does not find "our", and does not find "sub"
+    if line.find("my ") == -1 and line.find("our ") == -1 and line.find("sub ") == -1 : return line # if the string does not have "my", does not find "our", and does not find "sub"
+    group_global_declaration_match = re.search(r'our\s*\((.*?)\);', line) # our (var1, var2, ...)
+    if group_global_declaration_match:
+        variables = group_global_declaration_match.group(1).strip()
+        return f"global {variables}"
+    
+    # Handle local variable declaration
     matches = re.findall(r'(\$|\@|\%|\&|\*)(\w+)', line)
     if not matches: raise SyntaxError(f"Given Perl code does not have sigils upon initilization of variables or subroutine!\nIssue occured at: {line}")
     for sigil, var_name in matches:

@@ -43,10 +43,15 @@ class TestRemoveSigil(unittest.TestCase):
     
     def test_sigils_in_function_declaration(self):
         self.assertEqual(_convert_declarations("sub $func_name {"), "def func_name(**args): Callable[..., Any] {")
-    
+
+    def test_group_global_declaration(self):
+        self.assertEqual(_convert_declarations("our (var1, var2);"), "global var1, var2")
+        self.assertEqual(_convert_declarations("our(var1, var2);"), "global var1, var2")
+        self.assertEqual(remove_sigils("our (var1, var2);"), "global var1, var2")
+
     def test_sigils_in_function_declaration_with_shift(self):
-        self.assertEqual(_convert_declarations("sub $func_name { my $var = shift; }"), "def func_name: Callable[..., Any] { var: Any = args.pop(0); }")
-        self.assertEqual(remove_sigils("sub $func_name { my $var = shift; }"), "def func_name: Callable[..., Any] { var: Any = args.pop(0); }")
+        self.assertEqual(_convert_declarations("sub $func_name { my $var = shift; }"), "def func_name(**args): Callable[..., Any] { var: Any = shift; }")
+        self.assertEqual(remove_sigils("sub $func_name { my $var = shift; }"), "def func_name(*args): Callable[..., Any] { var: Any = args.pop(0); }")
     
     def test_sigils_in_function_definition_multiple_shifts(self):
         self.assertEqual(remove_sigils("sub $func_name { my $var1 = shift; my $var2 = shift; }"), "def func_name(*args): Callable[..., Any] { var1: Any = args.pop(0); var2: Any = args.pop(0); }")
