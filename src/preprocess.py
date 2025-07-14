@@ -3,7 +3,7 @@ import argparse
 import subprocess
 import datetime
 
-from internal.write_to_file import _write_to_file
+from internal.write_to_file import write_to_file
 
 def preprocess(input_file_dir: str, output_file_dir:str = None, shebang:str = '#!/usr/bin/python3') -> str:
     
@@ -34,7 +34,7 @@ Peng Tao, for the TAO package and tasking me to translate the package from PERL 
 Larry Wall, for the first postmodern computer language.
 Guido van Rossum, for an excellent programming language.
 """'''
-        _write_to_file(output_file_dir, content, 'w')
+        write_to_file(output_file_dir, content, 'w')
 
         # remove use strict as python does not need it
         file_content = [line for line in file_content if not line.startswith('use strict;')]
@@ -54,7 +54,7 @@ Guido van Rossum, for an excellent programming language.
             if perldoc_flag:
                 continue
             else: # add the line to content
-                _write_to_file(output_file_dir, line, 'a')
+                write_to_file(output_file_dir, line, 'a')
     
 def __main__():
     parser = argparse.ArgumentParser(description="Preprocess a Perl file to Python.")
