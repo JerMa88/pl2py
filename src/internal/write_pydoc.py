@@ -26,7 +26,7 @@ class MDDoc(TextDoc):
         """
         return f"**{text}**"
     
-def write_pydoc_text(package_name: str) -> None:
+def write_pydoc_text(package_name: str, output_dir: str = None) -> None:
     """
     Write the documentation of a package to a Markdown file.
 
@@ -34,11 +34,12 @@ def write_pydoc_text(package_name: str) -> None:
         package_name (str): The name of the package to document.
     """
     doc = render_doc(package_name, renderer=MDDoc())
-    with open(f"{package_name}.md", "w") as f:
+    if output_dir is None: output_dir = f"{package_name}.md"
+    with open(output_dir, "w") as f:
         f.write(doc)
     print(f"Documentation for {package_name} written to {package_name}.md")
 
-def write_pydoc_HTML(package_name: str) -> None:
+def write_pydoc_HTML(package_name: str, output_dir: str = None) -> None:
     """
     Write the documentation of a package to an HTML file.
 
@@ -46,6 +47,27 @@ def write_pydoc_HTML(package_name: str) -> None:
         package_name (str): The name of the package to document.
     """
     writedoc(package_name)
+    # if user wants to specify output directory, move the file into it
+    if output_dir is not None:
+        import os
+        html_file = f"{package_name}.html"
+        if os.path.exists(html_file):
+            os.rename(html_file, os.path.join(output_dir, html_file))
+            print(f"Documentation for {package_name} written to {os.path.join(output_dir, html_file)}")
+        else:
+            print(f"Documentation file {html_file} does not exist.")
+
+def write_pydoc(package_name: str, output_dir: str = None) -> None:
+    """
+    Write the documentation of a package in both Markdown and HTML formats.
+
+    Args:
+        package_name (str): The name of the package to document.
+        output_dir (str, optional): Directory to save the documentation files.
+    """
+    write_pydoc_text(package_name, output_dir)
+    write_pydoc_HTML(package_name, output_dir)
+    print(f"Documentation for {package_name} written in both Markdown and HTML formats.")
 
 def __main__() -> None:
     """

@@ -10,4 +10,12 @@ Larry Wall, for the first postmodern computer language.
 Guido van Rossum, for an excellent programming language.
 """
 
-import
+import re
+
+from internal.write_to_file import write_to_file
+from internal.write_pydoc import write_pydoc
+from internal.syntax import convert_syntax
+from internal.
+
+def process_each_line(line:str) -> str:
+    
