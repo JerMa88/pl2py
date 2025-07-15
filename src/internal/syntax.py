@@ -66,8 +66,7 @@ def _convert_oneline_if(line: str) -> str:
         statement = match.group(1).strip()
         condition = match.group(2).strip()
         return f"if {condition}: {statement};"
-    else:
-        raise ValueError("Input does not match expected 'statement if condition;' pattern.")
+    return line
 
 def _delete_semicolon(line: str) -> str:
     """

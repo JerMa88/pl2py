@@ -11,11 +11,11 @@ def _append_typing(sigil: str) -> str:
         str: Python type hints.
     """
     sigil_to_type = {
-        '$': "Any",                 # scalar
-        '@': "List[Any]",           # array
-        '%': "Dict[Any, Any]",      # hashe
-        '&': "Callable[..., Any]",  # subroutine
-        '*': "Any"                  # typeblob, used to refer to a variable's symbol table entry
+        '$': "any",                 # scalar
+        '@': "list[any]",           # array
+        '%': "dict[any, any]",      # hashe
+        '&': "Callable[..., any]",  # subroutine
+        '*': "any"                  # typeblob, used to refer to a variable's symbol table entry
     }
     if sigil in sigil_to_type:
         return sigil_to_type[sigil]
@@ -47,7 +47,7 @@ def _convert_declarations(line: str) -> str:
         line = re.sub(rf'our\s+{re.escape(sigil)}{var_name}', f'{var_name.upper()}: {type_hint}', line, count=1)
         #function declaration
         func_name = var_name
-        line = re.sub(rf'sub\s+{re.escape(sigil)}{func_name}', f'def {func_name}(**args): Callable[..., Any]', line, count=1)
+        line = re.sub(rf'sub\s+{re.escape(sigil)}{func_name}', f'def {func_name}(**args): Callable[..., any]', line, count=1)
         # print(line)
     return line
 
@@ -74,7 +74,7 @@ def _array_hash_init(line:str) -> str:
     if array_match:
         scope, var_name, content = array_match.groups()
         var_name = var_name.upper() if scope == 'our' else var_name
-        line = f"{var_name}: List[Any] = [{content}];"
+        line = f"{var_name}: list[any] = [{content}];"
 
     # Handle hash initialization `my %hash = ('key' => 'value');`
     hash_match = re.match(r'(my|our)\s+%(\w+)\s*=\s*\((.*)\)\s*;?', line)
@@ -82,7 +82,7 @@ def _array_hash_init(line:str) -> str:
         scope, var_name, content = hash_match.groups()
         var_name = var_name.upper() if scope == 'our' else var_name
         py_content = content.replace('=>', ':')
-        line = f"{var_name}: Dict[Any, Any] = {{{py_content}}};"
+        line = f"{var_name}: dict[any, any] = {{{py_content}}};"
     
     # Handle hash value access `$hash{'key'}` -> `hash['key']`
     # This regex finds a variable with a $ sigil followed by braces {}

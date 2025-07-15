@@ -31,6 +31,7 @@ def process_each_line(line:str) -> str:
     """
     line = convert_syntax(line)
     line = remove_sigils(line)
+    line = re.sub(r'(\w+)->\{(\w+)\}', r'\1.\2', line)
     return line
 
 def pl2py(input_file_dir:str, 
@@ -49,42 +50,33 @@ def pl2py(input_file_dir:str,
     preprocess(input_file_dir, preprocessed_file_dir, shebang = shebang)
     if verbose: print(f"File preprocessed. pl2py file created: {preprocessed_file_dir}")
 
-    # Flags for tracking the level of indentation
-    indent_level = 0
+    # Flags for tracking if file has reached the pydoc section
     doc_content = True
     # Open the preprocessed file and convert each line
     with open(preprocessed_file_dir, 'r') as infile, \
         open(output_file_dir, 'w') as outfile:
         if verbose: print(f"Converting file: {preprocessed_file_dir} to {output_file_dir}")
         for line in infile:
-            indent = ' ' * (indent_level * 4)  # 4 spaces per indent level
             # Copy the pydocs at the beginning of the file
             # write all lines before line with '=====Start Converting Now====='
             if doc_content:
                 if ('=====Start Converting Now=====' in line): doc_content = False; continue
                 outfile.write(line)
+                continue
             
             line = line.strip()
             if verbose: print(f'Processing line: {line}')
             if line == '' or line.startswith('#'): # Skip empty lines and comments
-                outfile.write(indent+line)
+                outfile.write(line+'\n')
                 continue
-            
-            # Handle indentation
-            if line.startswith('if {') or line.startswith('for {') or line.startswith('while {') or line.startswith('sub {'):
-                outfile.write(indent + process_each_line(line) + '\n')
-                indent_level += 1
-            if line.startswith('}'):  # Decrease indent level for closing braces
-                indent_level -= 1
-            if indent_level < 0: indent_level = 0; print("Indentation level went below 0, resetting to 0.\n Line where this happened: ", line)
 
             # Process the line and write to the output file
-            outfile.write(indent + process_each_line(line) + '\n')
+            outfile.write(process_each_line(line) + '\n')
     
     if verbose: print(f"File converted and written to: {output_file_dir}")
-    if pydoc_dir:
-        write_pydoc(output_file_dir, output_dir=pydoc_dir)
-        if verbose: print(f"Documentation written for {output_file_dir}")
+    # if pydoc_dir:
+    #     write_pydoc(output_file_dir, output_dir=pydoc_dir)
+    #     if verbose: print(f"Documentation written for {output_file_dir}")
 
 def __main__() -> None:
 
@@ -99,3 +91,6 @@ def __main__() -> None:
     verbose = bool(sys.argv[4]) if len(sys.argv) > 4 else False
 
     pl2py(input_file, output_file, pydoc_dir, verbose)
+
+if __name__ == "__main__":
+    __main__()
