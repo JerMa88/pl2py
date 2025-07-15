@@ -33,7 +33,10 @@ __credits__ = """
 Peng Tao, for the TAO package and tasking me to translate the package from PERL into Python.
 Larry Wall, for the first postmodern computer language.
 Guido van Rossum, for an excellent programming language.
-"""'''
+"""
+=====Start Converting Now=====
+
+'''
         write_to_file(output_file_dir, content, 'w')
 
         # remove use strict as python does not need it

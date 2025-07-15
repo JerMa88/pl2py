@@ -110,7 +110,10 @@ __credits__ = """
 Peng Tao, for the TAO package and tasking me to translate the package from PERL into Python.
 Larry Wall, for the first postmodern computer language.
 Guido van Rossum, for an excellent programming language.
-"""#!/usr/bin/perl
+"""
+=====Start Converting Now=====
+
+#!/usr/bin/perl
 
 use lib "/home/zma/Documents/programs/tao_package/taopackage/";
 import os
